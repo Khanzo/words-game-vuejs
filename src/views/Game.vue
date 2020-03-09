@@ -2,6 +2,8 @@
 <template>
   <div v-if="loading">Loading...</div>
   <div v-else class="game">
+    <div v-show="erroring" v-bind:error = error
+    class="alert alert-danger" role="alert">Ошибка запроса! {{ error }}</div>
     <Pole />
     <Keyboard />
     <confirm v-show="show"></confirm>
@@ -25,6 +27,8 @@ export default {
     return {
       numbers: [],
       loading: true,
+      erroring: false,
+      error: '',
       randomText: '',
       counter: 0,
       show: false,
@@ -111,6 +115,8 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          this.erroring = true;
+          this.error = error;
         })
         .finally(() => {
           this.loading = false;
